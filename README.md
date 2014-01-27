@@ -18,12 +18,7 @@ rel.13.11.25.tar.gz	-	Version shipped from 12/2013 to 1/2014
                                 No USB camera  
 
 ##########################################################################
-How to create the FPGA bitstream? (parallella.bit.bin)
 
-##########################################################################
-How to create the Zynq first stage loader? (fsbl.elf)
-
-##########################################################################
 How to compile the ADI based linux kernel? (uImage)
 git clone https://github.com/parallella/parallella-linux-adi
 cd parallella-linux-adi
@@ -35,23 +30,19 @@ make ARCH=arm parallella_defconfig
 make ARCH=arm uImage
 
 ###########################################################################
+
 How to compile the device tree? (devicetree.dtb)
 scripts/dtc/dtc -I dts -O dtb -o arch/arm/boot/zynq-zed.dtb arch/arm/boot/dts/zynq-zed.dts
 
-###############################################################
-How to create the qspi flash image? (parallella.bin)
+#########################################################################
 
-1. Create a ".bif" configuration file with the following content:
+How to create the FPGA bitstream? (parallella.bit.bin)
+Use the Xilinx tool chain (ISE 14.4) 
 
-the_ROM_image:
-{
-[bootloader]/path/to/fsbl.elf
- /path/to/u-boot.elf
-}
+##########################################################################
 
-2. Run bootgen:
-
-  bootgen -image /path/to/image.bif -o i parallella.bin
+How to create the Zynq first stage loader? (fsbl.elf)?
+Use the Xilinx tool chain (ISE 14.4) 
 
 ###############################################################
 How to compile u-boot? (u-boot.elf)
@@ -74,3 +65,18 @@ How to compile u-boot? (u-boot.elf)
 
   make -j 2
 ###################################################################
+How to create the qspi flash image? (parallella.bin)
+
+1. Create a ".bif" configuration file with the following content:
+
+the_ROM_image:
+{
+[bootloader]/path/to/fsbl.elf
+ /path/to/u-boot.elf
+}
+
+2. Run bootgen:
+
+  bootgen -image /path/to/image.bif -o i parallella.bin
+###################################################################
+
