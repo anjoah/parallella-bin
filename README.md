@@ -17,66 +17,67 @@ rel.13.11.25.tar.gz	-	Version shipped from 12/2013 to 1/2014
                                 Based on ADI linux tree with HDMI  
                                 No USB camera  
 
-##########################################################################
+##########################################################################  
 
-How to compile the ADI based linux kernel? (uImage)
-git clone https://github.com/parallella/parallella-linux-adi
-cd parallella-linux-adi
-bash
-export ARCH=arm
-export CROSS_COMPILE=<your-toolchain-prefix> #eg arm-xilinx-linux-gnuabi-
-export PATH=<path/to/your/arm-toolchain>:$PATH 
-make ARCH=arm parallella_defconfig
-make ARCH=arm uImage
+How to compile the ADI based linux kernel? (uImage)  
+git clone https://github.com/parallella/parallella-linux-adi  
+cd parallella-linux-adi  
+bash  
+export ARCH=arm  
+export CROSS_COMPILE=<your-toolchain-prefix> #eg arm-xilinx-linux-gnuabi-  
+export PATH=<path/to/your/arm-toolchain>:$PATH  
+make ARCH=arm parallella_defconfig  
+make ARCH=arm uImage  
 
-###########################################################################
+###########################################################################  
 
-How to compile the device tree? (devicetree.dtb)
-scripts/dtc/dtc -I dts -O dtb -o arch/arm/boot/zynq-zed.dtb arch/arm/boot/dts/zynq-zed.dts
+How to compile the device tree? (devicetree.dtb)  
+scripts/dtc/dtc -I dts -O dtb -o arch/arm/boot/zynq-zed.dtb arch/arm/boot/dts/zynq-zed.dts  
+  
+#########################################################################   
 
-#########################################################################
+How to create the FPGA bitstream? (parallella.bit.bin)  
+Use the Xilinx tool chain (ISE 14.4)   
+  
+##########################################################################  
 
-How to create the FPGA bitstream? (parallella.bit.bin)
-Use the Xilinx tool chain (ISE 14.4) 
+How to create the Zynq first stage loader? (fsbl.elf)?  
+Use the Xilinx tool chain (ISE 14.4)   
 
-##########################################################################
+###############################################################  
+How to compile u-boot? (u-boot.elf)  
 
-How to create the Zynq first stage loader? (fsbl.elf)?
-Use the Xilinx tool chain (ISE 14.4) 
+  sudo apt-get install u-boot-tools  
 
-###############################################################
-How to compile u-boot? (u-boot.elf)
+  git clone https://github.com/parallella/parallella-uboot.git  
 
-  sudo apt-get install u-boot-tools
+  cd parallella-uboot  
 
-  git clone https://github.com/parallella/parallella-uboot.git
+  bash  
 
-  cd parallella-uboot
+  export ARCH=arm  
 
-  bash
+  export CROSS_COMPILE=<your-toolchain-prefix> #eg arm-xilinx-linux-gnuabi-  
 
-  export ARCH=arm
+  export PATH=<path/to/your/arm-toolchain>:$PATH   
 
-  export CROSS_COMPILE=<your-toolchain-prefix> #eg arm-xilinx-linux-gnuabi-
+  make parallella_config  
 
-  export PATH=<path/to/your/arm-toolchain>:$PATH 
+  make -j 2  
+###################################################################  
+How to create the qspi flash image? (parallella.bin)  
 
-  make parallella_config
+1. Create a ".bif" configuration file with the following content:  
 
-  make -j 2
-###################################################################
-How to create the qspi flash image? (parallella.bin)
+the_ROM_image:  
+{  
+[bootloader]/path/to/fsbl.elf  
+ /path/to/u-boot.elf  
+}  
 
-1. Create a ".bif" configuration file with the following content:
+2. Run bootgen:  
 
-the_ROM_image:
-{
-[bootloader]/path/to/fsbl.elf
- /path/to/u-boot.elf
-}
+  bootgen -image /path/to/image.bif -o i parallella.bin  
+###################################################################  
 
-2. Run bootgen:
-
-  bootgen -image /path/to/image.bif -o i parallella.bin
-###################################################################
 
