@@ -20,8 +20,8 @@ rel.13.11.25.tgz	-	Version shipped from 12/2013 to 1/2014
 ##########################################################################  
 
 How to compile the ADI based linux kernel? (uImage)  
-git clone https://github.com/parallella/parallella-linux-adi  
-cd parallella-linux-adi  
+git clone https://github.com/parallella/parallella-linux  
+cd parallella-linux 
 bash  
 export ARCH=arm  
 export CROSS_COMPILE=<your-toolchain-prefix> #eg arm-xilinx-linux-gnuabi-  
